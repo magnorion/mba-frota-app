@@ -1,0 +1,24 @@
+<form class="example-form">
+  <mat-toolbar color="primary">
+    <section class="col-md-12">
+      <div class="row">
+        <!-- Campo de busca-->
+        <mat-form-field class="col-md-11">
+          <input
+          [(ngModel)]="search"
+          name="search" matInput
+          (keydown)="searchByEnter($event)"
+          placeholder="Qual a nossa proxima parada?" value="">
+        </mat-form-field>
+
+        <!-- botao de busca -->
+        <div class="col-md-1 pt-3">
+          <button (click)="searchLatLng()" mat-raised-button color="light">
+            <mat-icon> search </mat-icon>
+          </button>
+        </div>
+
+      </div>
+    </section>
+  </mat-toolbar>
+</form>

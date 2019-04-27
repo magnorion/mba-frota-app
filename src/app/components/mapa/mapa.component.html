@@ -1,0 +1,10 @@
+<agm-map [zoom]="zoom" [latitude]="-23.638090" [longitude]="-46.645050">
+  <agm-marker
+  [latitude]="-23.638090"
+  [longitude]="-46.645050"
+  [iconUrl]="'assets/images/map-marker.png'"></agm-marker>
+  <agm-marker *ngIf="flag"
+  [latitude]="lat"
+  [longitude]="lng"
+  [iconUrl]="'assets/images/racing-flag.png'"></agm-marker>
+</agm-map>
