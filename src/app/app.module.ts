@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 // Components
-import { AppComponent } from './app.component';
+import { AppComponent, AppDialogComponent } from './app.component';
 import { MapaComponent } from './components/mapa/mapa.component';
 
 // Modules
@@ -17,11 +17,12 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { HttpClientModule } from '@angular/common/http';
 import { MatListModule } from '@angular/material/list';
-
+import { MatDialogModule } from '@angular/material/dialog';
 
 @NgModule({
   declarations: [
     AppComponent,
+    AppDialogComponent,
     MapaComponent,
     SearchBarComponent
   ],
@@ -38,9 +39,13 @@ import { MatListModule } from '@angular/material/list';
     MatIconModule,
     MatToolbarModule,
     MatListModule,
+    MatDialogModule,
     AgmCoreModule.forRoot({
       apiKey: 'AIzaSyBvVwA_0U-j-LktaHM1_WG881p27fewF48'
     })
+  ],
+  entryComponents: [
+    AppDialogComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

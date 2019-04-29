@@ -1,7 +1,7 @@
 import { GeolocationModel } from './GeolocationModel';
 
 export class GeometryResult {
-  constructor (
+  constructor(
     public geometry: GeolocationModel
   ) {}
 }
