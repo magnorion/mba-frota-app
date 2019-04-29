@@ -18,9 +18,7 @@ export class AppComponent implements OnInit {
   constructor(
     public dialog: MatDialog,
     private frotaService: FrotaService
-  ) {
-    this.openDialog();
-  }
+  ) { }
 
   ngOnInit() {
     this.carros = [new ListaCarro('', '', '', '', '', '')];
@@ -30,6 +28,8 @@ export class AppComponent implements OnInit {
   searchResult(location: GeometryModel): void {
     this.lat = location.lat;
     this.lng = location.lng;
+
+    this.openDialog();
   }
 
   public openDialog(): void {
@@ -42,8 +42,7 @@ export class AppComponent implements OnInit {
   }
 
   public getCars(): void {
-    this.frotaService.listaCarros().subscribe(res => console.log(res),
-    err => console.log(err));
+    this.frotaService.listaCarros().subscribe(res => this.carros = res);
   }
 }
 
@@ -56,7 +55,7 @@ export class AppDialogComponent {
   constructor(
     public dialogRef: MatDialogRef<AppComponent>,
     @Inject(MAT_DIALOG_DATA) public data
-  ) {}
+  ) { }
 
   onNoClick(): void {
     this.dialogRef.close();

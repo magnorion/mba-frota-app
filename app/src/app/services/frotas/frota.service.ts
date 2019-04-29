@@ -12,16 +12,11 @@ export class FrotaService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = 'https://frota-v2-api.herokuapp.com/frotasV2';
+    this.url = 'http://localhost:3000';
   }
 
   listaCarros(): Observable<Array<ListaCarro>> {
-    const header = {
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Headers': 'Content-Type',
-    };
-
     return this.http
-      .get<Array<ListaCarro>>(`${this.url}/listaCarros`, {headers: header}).pipe();
+      .get<Array<ListaCarro>>(`${this.url}/lista-carros`).pipe();
   }
 }
