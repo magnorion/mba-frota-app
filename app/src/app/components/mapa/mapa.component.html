@@ -1,10 +1,19 @@
 <agm-map [zoom]="zoom" [latitude]="latitude" [longitude]="longitude">
+  <!-- marker user-->
   <agm-marker
   [latitude]="latitude"
   [longitude]="longitude"
   [iconUrl]="'assets/images/map-marker.png'"></agm-marker>
+
+  <!-- marker destiny-->
   <agm-marker *ngIf="flag"
   [latitude]="lat"
   [longitude]="lng"
+  [iconUrl]="'assets/images/racing-flag.png'"></agm-marker>
+
+  <!-- marker cars-->
+  <agm-marker *ngFor="let car of cars"
+  [latitude]="car.latitude"
+  [longitude]="car.longitude"
   [iconUrl]="'assets/images/racing-flag.png'"></agm-marker>
 </agm-map>

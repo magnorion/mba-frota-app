@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { ListaCarro } from 'src/app/models/ListaCarro';
 
 @Component({
   selector: 'app-mapa',
@@ -17,6 +18,10 @@ export class MapaComponent implements OnInit {
   public zoom: number;
   public flag = false;
 
+  // Car location
+  public cars: Array<ListaCarro> = [];
+  public flagCars = false;
+
   @Input('setLat')
   set setLat(value: number) {
     if (value !== undefined) {
@@ -30,11 +35,21 @@ export class MapaComponent implements OnInit {
     this.lng = value;
   }
 
+  @Input('setCarros')
+  set setCarros(value) {
+    if (value !== undefined) {
+      this.flagCars = true;
+    }
+    console.log(value);
+    this.cars = value;
+  }
+
   constructor() { }
 
   ngOnInit() {
     this.zoom = 12;
     this.flag = false;
+    this.cars = [new ListaCarro('', '', '', '', '', '')];
 
     navigator.geolocation.getCurrentPosition(pos => this.getUserPosition(pos));
   }
