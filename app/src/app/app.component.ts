@@ -14,6 +14,7 @@ export class AppComponent implements OnInit {
   public lng: number;
 
   public carros: Array<ListaCarro>;
+  public carro: ListaCarro;
 
   constructor(
     public dialog: MatDialog,
@@ -22,6 +23,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.carros = [new ListaCarro('', '', '', '', '', '')];
+    this.carro = null;
     this.getCars();
   }
 
@@ -38,11 +40,14 @@ export class AppComponent implements OnInit {
       data: {carros: this.carros}
     });
 
-    dialogRef.afterClosed().subscribe(res => console.log('dialog closed'));
+    dialogRef.afterClosed().subscribe(res => this.carro = res);
   }
 
   public getCars(): void {
-    this.frotaService.listaCarros().subscribe(res => this.carros = res);
+    this.frotaService.listaCarros()
+      .subscribe(res => this.carros =
+        res.filter(arr => (arr.status !== 'ocupado' &&
+        (arr.latitude !== null && arr.longitude !== null))));
   }
 }
 
@@ -51,13 +56,21 @@ export class AppComponent implements OnInit {
   templateUrl: './dialog-overview-example-dialog.html',
 })
 export class AppDialogComponent {
+  public select: ListaCarro;
 
   constructor(
     public dialogRef: MatDialogRef<AppComponent>,
     @Inject(MAT_DIALOG_DATA) public data
-  ) { }
+  ) {
+    this.select = null;
+  }
 
-  onNoClick(): void {
-    this.dialogRef.close();
+  public selectCar(car: ListaCarro): void {
+    this.select = car;
+    this.onNoClick(this.select);
+  }
+
+  onNoClick(car: ListaCarro = null): void {
+    this.dialogRef.close(car);
   }
 }

@@ -12,8 +12,8 @@
   [iconUrl]="'assets/images/racing-flag.png'"></agm-marker>
 
   <!-- marker cars-->
-  <agm-marker *ngFor="let car of cars"
-  [latitude]="car.latitude"
-  [longitude]="car.longitude"
-  [iconUrl]="'assets/images/racing-flag.png'"></agm-marker>
+  <agm-marker *ngIf="flagCars"
+  [latitude]="-23.574165"
+  [longitude]="-46.623248"
+  [iconUrl]="'assets/images/car-'+ carNumber + '.png'"></agm-marker>
 </agm-map>

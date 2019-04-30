@@ -19,15 +19,17 @@ export class SearchBarComponent implements OnInit {
   ngOnInit() {
   }
 
-  public searchLatLng(): void {
+  public searchLatLng(event): void {
+    event.preventDefault();
     if (this.search !== '') {
-      this.service.getLatLng(this.search).subscribe(res => this.sendGeometry(res.results[0].geometry));
+      this.service.getLatLng(this.search)
+        .subscribe(res => this.sendGeometry(res.results[0].geometry));
     }
   }
 
   public searchByEnter(event): void {
     if (event.keyCode === 13) {
-      this.searchLatLng();
+      this.searchLatLng(event);
     }
   }
 

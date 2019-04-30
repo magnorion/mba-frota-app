@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { ListaCarro } from 'src/app/models/ListaCarro';
+import { FrotaService } from 'src/app/services/frotas/frota.service';
 
 @Component({
   selector: 'app-mapa',
@@ -19,15 +20,16 @@ export class MapaComponent implements OnInit {
   public flag = false;
 
   // Car location
-  public cars: Array<ListaCarro> = [];
+  public car: ListaCarro;
   public flagCars = false;
+  public carNumber = 1;
 
   @Input('setLat')
   set setLat(value: number) {
-    if (value !== undefined) {
+    if (value !== null) {
       this.flag = true;
+      this.lat = value;
     }
-    this.lat = value;
   }
 
   @Input('setLng')
@@ -37,19 +39,27 @@ export class MapaComponent implements OnInit {
 
   @Input('setCarros')
   set setCarros(value) {
-    if (value !== undefined) {
+    if (value !== null) {
       this.flagCars = true;
+      this.car = value;
+      this.car.latitude = '-23.574165';
+      this.car.longitude = '-23.574165';
+      this.carNumber = Math.floor(Math.random() * (4 - 1)) + 1;
+
+      this.checkTravel(this.latitude, this.longitude);
+
+      setInterval(() => this.checkClient(), 2500);
     }
-    console.log(value);
-    this.cars = value;
   }
 
-  constructor() { }
+  constructor(
+    private serviceCar: FrotaService
+  ) { }
 
   ngOnInit() {
-    this.zoom = 12;
+    this.zoom = 11;
     this.flag = false;
-    this.cars = [new ListaCarro('', '', '', '', '', '')];
+    this.car = new ListaCarro('', '', '', '', '', '');
 
     navigator.geolocation.getCurrentPosition(pos => this.getUserPosition(pos));
   }
@@ -57,5 +67,19 @@ export class MapaComponent implements OnInit {
   public getUserPosition(position: Position) {
     this.latitude = position.coords.latitude;
     this.longitude = position.coords.longitude;
+  }
+
+  public checkTravel(lat, long) {
+    this.serviceCar.getTravel(this.car.latitude, this.car.longitude, lat, long)
+      .subscribe(res => {
+        console.log(res);
+      });
+  }
+
+  public checkClient() {
+    this.serviceCar.getClient(this.latitude, this.longitude)
+      .subscribe(res => {
+        console.log(res);
+      });
   }
 }
