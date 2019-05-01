@@ -4,7 +4,7 @@ import { FormsModule } from '@angular/forms';
 
 // Components
 import { AppComponent, AppDialogComponent } from './app.component';
-import { MapaComponent } from './components/mapa/mapa.component';
+import { MapaComponent, AppMapDialogComponent } from './components/mapa/mapa.component';
 
 // Modules
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +23,7 @@ import { MatDialogModule } from '@angular/material/dialog';
   declarations: [
     AppComponent,
     AppDialogComponent,
+    AppMapDialogComponent,
     MapaComponent,
     SearchBarComponent
   ],
@@ -45,7 +46,8 @@ import { MatDialogModule } from '@angular/material/dialog';
     })
   ],
   entryComponents: [
-    AppDialogComponent
+    AppDialogComponent,
+    AppMapDialogComponent
   ],
   providers: [],
   bootstrap: [AppComponent]

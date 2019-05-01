@@ -1,6 +1,7 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Inject } from '@angular/core';
 import { ListaCarro } from 'src/app/models/ListaCarro';
 import { FrotaService } from 'src/app/services/frotas/frota.service';
+import { MatDialogRef, MAT_DIALOG_DATA, MatDialog } from '@angular/material';
 
 @Component({
   selector: 'app-mapa',
@@ -15,6 +16,7 @@ export class MapaComponent implements OnInit {
   // User location
   public latitude: number;
   public longitude: number;
+  public flagUser = true;
 
   public zoom: number;
   public flag = false;
@@ -23,6 +25,10 @@ export class MapaComponent implements OnInit {
   public car: ListaCarro;
   public flagCars = false;
   public carNumber = 1;
+
+  // Trabel
+  public distancia;
+  public movingFlag = false;
 
   @Input('setLat')
   set setLat(value: number) {
@@ -48,18 +54,27 @@ export class MapaComponent implements OnInit {
 
       this.checkTravel(this.latitude, this.longitude);
 
-      setInterval(() => this.checkClient(), 2500);
+      this.movingFlag = false;
+      this.checkClient();
     }
   }
 
   constructor(
-    private serviceCar: FrotaService
+    private serviceCar: FrotaService,
+    public dialog: MatDialog
   ) { }
 
   ngOnInit() {
-    this.zoom = 11;
+    this.zoom = 12;
     this.flag = false;
     this.car = new ListaCarro('', '', '', '', '', '');
+
+    // User position (FIAP)
+    this.latitude = -23.574165;
+    this.longitude = -46.654404;
+
+    // Distance
+    this.distancia = 0;
 
     navigator.geolocation.getCurrentPosition(pos => this.getUserPosition(pos));
   }
@@ -79,7 +94,67 @@ export class MapaComponent implements OnInit {
   public checkClient() {
     this.serviceCar.getClient(this.latitude, this.longitude)
       .subscribe(res => {
-        console.log(res);
+        this.distancia = Number(res.distancia.toString()[0]);
+        if (this.distancia < 1 || this.distancia === NaN) {
+          this.distancia = 1;
+        }
+
+        this.openDialog(`O carro está a ${this.distancia}km de distância!`);
       });
+  }
+
+  public openDialog(message): void {
+    const dialogRef = this.dialog.open(AppMapDialogComponent, {
+      width: '300px',
+      data: { message: message }
+    });
+
+    dialogRef.afterClosed().subscribe(res => { this.carMoving(); });
+  }
+
+  public carMoving(): void {
+    setTimeout(() => {
+      let msg;
+      if (this.movingFlag === true) {
+        msg = 'Você chegou ao seu destino!';
+        this.car.latitude = this.lat.toString();
+        this.car.longitude = this.lng.toString();
+        this.movingFlag = null;
+        this.flagUser = true;
+        this.flag = false;
+        this.flagCars = false;
+
+        this.latitude = this.lat;
+        this.longitude = this.lng;
+        this.openDialog(msg);
+      } else if (this.movingFlag === false) {
+        msg = 'O seu motorista acabou de chegar!';
+        this.movingFlag = true;
+        this.flagUser = false;
+        this.car.latitude = this.latitude.toString();
+        this.car.longitude = this.longitude.toString();
+        this.openDialog(msg);
+      }
+
+    }, (this.distancia * 1000));
+  }
+}
+
+@Component({
+  selector: 'app-map-dialog',
+  templateUrl: './dialog-map.html'
+})
+export class AppMapDialogComponent {
+  public message: string;
+
+  constructor(
+    public dialogRef: MatDialogRef<MapaComponent>,
+    @Inject(MAT_DIALOG_DATA) public data
+  ) {
+    this.message = data.message;
+  }
+
+  onNoClick(): void {
+    this.dialogRef.close();
   }
 }

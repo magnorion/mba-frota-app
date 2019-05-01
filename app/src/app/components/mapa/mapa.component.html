@@ -1,6 +1,6 @@
 <agm-map [zoom]="zoom" [latitude]="latitude" [longitude]="longitude">
   <!-- marker user-->
-  <agm-marker
+  <agm-marker *ngIf="flagUser"
   [latitude]="latitude"
   [longitude]="longitude"
   [iconUrl]="'assets/images/map-marker.png'"></agm-marker>
@@ -13,7 +13,7 @@
 
   <!-- marker cars-->
   <agm-marker *ngIf="flagCars"
-  [latitude]="-23.574165"
-  [longitude]="-46.623248"
+  [latitude]="car.latitude"
+  [longitude]="car.longitude"
   [iconUrl]="'assets/images/car-'+ carNumber + '.png'"></agm-marker>
 </agm-map>

@@ -40,7 +40,13 @@ export class AppComponent implements OnInit {
       data: {carros: this.carros}
     });
 
-    dialogRef.afterClosed().subscribe(res => this.carro = res);
+    dialogRef.afterClosed().subscribe(res => {
+      try {
+        this.carro = res
+      } catch (err) {
+        return null;
+      }
+    });
   }
 
   public getCars(): void {
@@ -53,7 +59,7 @@ export class AppComponent implements OnInit {
 
 @Component({
   selector: 'app-dialog',
-  templateUrl: './dialog-overview-example-dialog.html',
+  templateUrl: './dialog-app.html'
 })
 export class AppDialogComponent {
   public select: ListaCarro;
