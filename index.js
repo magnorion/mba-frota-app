@@ -5,6 +5,7 @@ app = express(),
 port = process.env.PORT || 3000;
 
 app.use(cors({origin: '*'}));
+app.use(express.static('./app/dist/front-app-frota'));
 
 consign({cwd: 'src'})
   .include('controllers')
