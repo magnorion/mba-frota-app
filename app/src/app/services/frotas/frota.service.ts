@@ -13,7 +13,7 @@ export class FrotaService {
   constructor(
     private http: HttpClient
   ) {
-    this.url = 'http://localhost:3000';
+    this.url = `${window.location.protocol}//${window.location.hostname}`;
   }
 
   listaCarros(): Observable<Array<ListaCarro>> {
